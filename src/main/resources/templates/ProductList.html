@@ -58,6 +58,9 @@
                 <a th:href="@{/product/edit/{productId}(productId=${product.productId})}" class="btn btn-warning btn-sm">
                     <i class="fas fa-edit"></i> Edit
                 </a>
+                <form th:action="@{/product/delete/{productId}(productId=${product.productId})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
             </td>
         </tr>
         </tbody>
