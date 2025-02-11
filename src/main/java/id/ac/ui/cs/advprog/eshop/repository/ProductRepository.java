@@ -36,6 +36,17 @@ public class ProductRepository {
         if (oldProduct != null) {
             oldProduct.setProductName(product.getProductName());
             oldProduct.setProductQuantity(product.getProductQuantity());
+        } else {
+            System.out.println("Product not found");
+        }
+    }
+
+    public void delete(String productId) {
+        Product product = findById(productId);
+        if (product != null) {
+            productData.remove(product);
+        } else {
+            System.out.println("Product not found");
         }
     }
 }
