@@ -32,21 +32,29 @@ public class ProductRepository {
     }
 
     public void edit(Product product) {
-        Product oldProduct = findById(product.getProductId());
-        if (oldProduct != null) {
-            oldProduct.setProductName(product.getProductName());
-            oldProduct.setProductQuantity(product.getProductQuantity());
-        } else {
-            System.out.println("Product not found");
+        try {
+            Product oldProduct = findById(product.getProductId());
+            if (oldProduct != null) {
+                oldProduct.setProductName(product.getProductName());
+                oldProduct.setProductQuantity(product.getProductQuantity());
+            } else {
+                throw new IllegalArgumentException("Product not found");
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
     }
 
     public void delete(String productId) {
-        Product product = findById(productId);
-        if (product != null) {
-            productData.remove(product);
-        } else {
-            System.out.println("Product not found");
+        try {
+            Product product = findById(productId);
+            if (product != null) {
+                productData.remove(product);
+            } else {
+                throw new IllegalArgumentException("Product not found");
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
     }
 }
