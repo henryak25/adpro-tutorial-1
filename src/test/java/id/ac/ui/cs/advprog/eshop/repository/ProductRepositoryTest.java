@@ -88,8 +88,17 @@ public class ProductRepositoryTest {
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());
-        productRepository.delete("a0f9de46-90b1-437d-a0bf-d0821dde9096");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.delete("a0f9de46-90b1-437d-a0bf-d0821dde9096");
+        });
+
+        productIterator = productRepository.findAll(); // Refresh iterator
         assertTrue(productIterator.hasNext());
+        Product savedProduct = productIterator.next();
+        assertEquals(product.getProductId(), savedProduct.getProductId());
+        assertEquals(product.getProductName(), savedProduct.getProductName());
+        assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
     }
 
     @Test
@@ -131,6 +140,7 @@ public class ProductRepositoryTest {
         assertEquals(product.getProductName(), savedProduct.getProductName());
         assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
     }
+
     @Test
     void testEditIfNotFound() {
         Product product = new Product();
@@ -143,9 +153,12 @@ public class ProductRepositoryTest {
         dummyProduct.setProductId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
         dummyProduct.setProductName("Sampo Cap Usep");
         dummyProduct.setProductQuantity(200);
-        productRepository.edit(dummyProduct);
 
-        Iterator<Product> productIterator = productRepository.findAll();
+        assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.edit(dummyProduct);
+        });
+
+        Iterator<Product> productIterator = productRepository.findAll(); // Refresh iterator
         assertTrue(productIterator.hasNext());
         Product savedProduct = productIterator.next();
         assertEquals(product.getProductId(), savedProduct.getProductId());
