@@ -7,14 +7,14 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 @WebMvcTest(HomePageController.class)
-public class HomePageControllerTest {
+class HomePageControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @BeforeEach
     void setUp() {
     }
     @Test
-    public void testHomePage() throws Exception {
+    void testHomePage() throws Exception {
         MockHttpServletResponse response = mockMvc.perform(
                         get("/"))
                 .andReturn().getResponse();
