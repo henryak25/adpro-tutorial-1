@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,6 @@ public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
-        product.setProductId(UUID.randomUUID().toString());
         productData.add(product);
         return product;
     }
@@ -32,29 +32,31 @@ public class ProductRepository {
     }
 
     public void edit(Product product) {
-        try {
-            Product oldProduct = findById(product.getProductId());
-            if (oldProduct != null) {
-                oldProduct.setProductName(product.getProductName());
-                oldProduct.setProductQuantity(product.getProductQuantity());
-            } else {
-                throw new IllegalArgumentException("Product not found");
-            }
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+
+        Product oldProduct = findById(product.getProductId());
+        if (oldProduct != null) {
+            oldProduct.setProductName(product.getProductName());
+            oldProduct.setProductQuantity(product.getProductQuantity());
+            System.out.println("Product Edited");
+        } else {
+            throw new IllegalArgumentException("Product not found");
         }
     }
 
     public void delete(String productId) {
-        try {
-            Product product = findById(productId);
-            if (product != null) {
-                productData.remove(product);
-            } else {
-                throw new IllegalArgumentException("Product not found");
-            }
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        if (productId == null || productId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product ID cannot be null or empty");
+        }
+
+        Product product = findById(productId);
+        if (product != null) {
+            productData.remove(product);
+            System.out.println("Product Deleted");
+        } else {
+            throw new IllegalArgumentException("Product not found");
         }
     }
 }
