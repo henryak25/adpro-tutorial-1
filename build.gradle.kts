@@ -30,6 +30,14 @@ repositories {
     mavenCentral()
 }
 
+sonar {
+    properties {
+        property("sonar.projectKey", "henryak25_adpro-tutorial-1")
+        property("sonar.organization", "henryak25")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -75,5 +83,6 @@ tasks.jacocoTestReport{
     dependsOn(tasks.test)
     reports {
         xml.required.set(true)
+        html.required.set(true)
     }
 }
