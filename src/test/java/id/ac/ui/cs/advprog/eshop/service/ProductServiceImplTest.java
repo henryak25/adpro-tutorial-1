@@ -9,14 +9,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
-public class ProductServiceImplTest {
+class ProductServiceImplTest {
     @InjectMocks
     private ProductRepository productRepository;
     @InjectMocks
     private ProductServiceImpl productService;
-    @BeforeEach
-    void setUp(){
-    }
+
     @Test
     void testCreate() {
         Product product = new Product();
