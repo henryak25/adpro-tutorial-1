@@ -5,6 +5,7 @@
 # Navigation List
 - [Module 1](#module-1)
 - [Module 2](#module-2)
+- [Module 3](#module-3)
 # Deployment Link
 Website deployed at koyeb: https://henry-adpro-tutorial.koyeb.app/
 
@@ -56,3 +57,26 @@ Masih cukup banyak hal yang bisa diimprovisasi dari code saya, seperti mengimple
     Kedua, untuk Continuous Deployment, saya memakai Koyeb yang terhubung langsung dengan repositori eshop. Setiap kali ada perubahan kode yang di-push, Koyeb secara otomatis melakukan pull dan deployment ulang tanpa memerlukan campur tangan saya. Menurut saya ini sudah memenuhi prinsip Continuous Deployment, di mana setiap perubahan yang lolos tahap integrasi langsung diterapkan ke lingkungan produksi.
     <br><br>
     Dengan begitu, workflow CI/CD yang saya terapkan sudah memenuhi kedua aspek tersebut, yaitu integrasi kode yang terus-menerus dan otomatis, serta deployment yang langsung ke lingkungan produksi tanpa hambatan.
+
+
+
+## Module 3
+1. Explain what principles you apply to your project!
+   Pada Modul 3 kali ini, terdapat beberapa Prinsip yang saya terapkan, yaitu:
+   1. Single Responsibility Principle
+        - Saya memisahkan CarController dari file ProductController, dengan begitu setiap class dan file kini memiliki tanggung jawab yang spesifik. Hal ini membuat proses maintenance ke depannya menjadi lebih mudah karena perubahan pada satu bagian tidak akan memengaruhi bagian lainnya.
+   2. Open-Closed Principle
+        - Saya membuat service baru yaitu ModelService, disini CarService dan ProductService akan extends ke ModelService. Dimana ini sudah sesuai dengan isi dari OCP, yaitu untuk terbuka terhadap ekstensi dan tertutup terhadap modifikasi. Jadinya kalau di masa depan perlu penambahan fungsi di CarService atau ProductService, maka dapat dilakukan tanpa perlu memodifikasi kode yang ada di ModelService.
+   3. Liskov Substitution Principle
+        - Sebelumnya CarController ada di ProductController dan dia extends ke ProductController, namun hal ini melanggar konsep LSP. Liskov Substitution Principle menyatakan bahwa objek dari subclass harus bisa menggantikan objek dari superclass tanpa mengubah kebenaran atau perilaku program. Disini CarController dan ProductController tidak bisa saling menggantikan, dengan begitu lebih baik dipisah saja, mereka seharusnya tidak memiliki hubungan inheritance jika perilakunya berbeda.
+   4. Interface Segregation Principle
+        - /-/
+   5. Dependency Inversion Principle
+        - Prinsip Dependency Inversion Principle (DIP) menyatakan bahwa modul high-level tidak boleh bergantung pada modul low-level. Keduanya harus bergantung pada abstraksi. Dengan begitu saya ubah agar CarController agar bergantung kepada CarService, bukan CarServiceImpl.
+2. Explain the advantages of applying SOLID principles to your project with examples.
+    - Setiap class atau modul memiliki tanggung jawab yang jelas dan terpisah, sehingga memudahkan maintenance dan pengembangan. Selain itu kode menjadi lebih terorganisir dan mudah dibaca karena fokusnya cukup satu tugas.  Contohnya, dengan memisahkan CarController dan ProductController, maka perubahan pada ProductController tidak akan memengaruhi CarController.
+    - Kode menjadi lebih fleksibel dan mudah dikembangkan tanpa perlu mengubah kode yang sudah ada. Dengan membuat ModelService sebagai base class untuk CarService dan ProductService, kita bisa menambahkan fungsionalitas baru di CarService atau ProductService tanpa mengubah ModelService.
+   
+3. Explain the disadvantages of not applying SOLID principles to your project with examples.
+    - Jika dibiarkan, class atau modul ke depannya bisa memiliki terlalu banyak tanggung jawab, sehingga sulit di-maintain dan rentan terhadap bug. Conthnya, Jika CarController dan ProductController digabung dalam satu class, perubahan pada ProductController bisa saja memengaruhi CarController juga.
+    - Kode menjadi kaku dan sulit dikembangkan, karena setiap penambahan fitur baru memerlukan modifikasi pada kode yang sudah ada. 
