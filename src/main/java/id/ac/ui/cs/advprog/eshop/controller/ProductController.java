@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.controller;
+import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
+import id.ac.ui.cs.advprog.eshop.service.CarService;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 
 
@@ -44,7 +46,7 @@ public class ProductController {
     }
     @PostMapping("/edit")
     public String editProductPost(@ModelAttribute Product product) {
-        service.edit(product);
+        service.update(product);
         return "redirect:/product/list";
     }
 

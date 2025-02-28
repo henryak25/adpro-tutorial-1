@@ -54,7 +54,7 @@ class ProductServiceImplTest {
         productUpdate.setProductName("Kucing");
         productUpdate.setProductQuantity(200);
         productUpdate.setProductId(beforeProduct.getProductId());
-        productService.edit(productUpdate);
+        productService.update(productUpdate);
         assertEquals("Kucing", beforeProduct.getProductName());
         assertEquals(200, beforeProduct.getProductQuantity());
     }
@@ -95,7 +95,7 @@ class ProductServiceImplTest {
     @Test
     void testEditNullProduct() {
         assertThrows(IllegalArgumentException.class, () -> {
-            productService.edit(null);
+            productService.update(null);
         });
     }
 
