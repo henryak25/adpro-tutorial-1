@@ -133,7 +133,7 @@ class ProductRepositoryTest {
         assertTrue(productIterator.hasNext());
         product.setProductName("Sampo Cap Usep");
         product.setProductQuantity(200);
-        productRepository.edit(product);
+        productRepository.update(product);
         Product savedProduct = productIterator.next();
         assertEquals(product.getProductName(), savedProduct.getProductName());
         assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
@@ -153,7 +153,7 @@ class ProductRepositoryTest {
         dummyProduct.setProductQuantity(200);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            productRepository.edit(dummyProduct);
+            productRepository.update(dummyProduct);
         });
 
         Iterator<Product> productIterator = productRepository.findAll(); // Refresh iterator
@@ -179,7 +179,7 @@ class ProductRepositoryTest {
 
         product1.setProductName("Sampo Cap Bambsep");
         product1.setProductQuantity(300);
-        productRepository.edit(product1);
+        productRepository.update(product1);
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());

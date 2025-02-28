@@ -31,7 +31,7 @@ public class ProductRepository {
         return null;
     }
 
-    public void edit(Product product) {
+    public Product update(Product product) {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
@@ -41,12 +41,13 @@ public class ProductRepository {
             oldProduct.setProductName(product.getProductName());
             oldProduct.setProductQuantity(product.getProductQuantity());
             System.out.println("Product Edited");
+            return oldProduct;
         } else {
             throw new IllegalArgumentException("Product not found");
         }
     }
 
-    public void delete(String productId) {
+    public Product delete(String productId) {
         if (productId == null || productId.trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be null or empty");
         }
@@ -55,6 +56,7 @@ public class ProductRepository {
         if (product != null) {
             productData.remove(product);
             System.out.println("Product Deleted");
+            return product;
         } else {
             throw new IllegalArgumentException("Product not found");
         }
