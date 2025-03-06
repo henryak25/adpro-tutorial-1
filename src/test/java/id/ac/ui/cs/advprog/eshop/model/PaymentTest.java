@@ -21,10 +21,8 @@ public class PaymentTest {
     void setUp() {
         paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-
-        order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, 1708560000L, "Safira Sudarajat");
-
+        paymentData.put("bankName", "cihuy");
+        paymentData.put("referenceCode", "1234");
         this.products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -36,6 +34,9 @@ public class PaymentTest {
         product2.setProductQuantity(1);
         this.products.add(product1);
         this.products.add(product2);
+        order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
+                this.products, 1708560000L, "Safira Sudarajat");
+
     }
 
     @Test
@@ -48,21 +49,19 @@ public class PaymentTest {
 
     @Test
     void testCreatePaymentEmptyStringBankName() {
-        Map<String, String> paymentDataBankName = new HashMap<>();
-        paymentDataBankName.put("bankName", "");
+        paymentData.put("bankName", "");
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(order.getId(),
-                    "Voucher Code", paymentDataBankName);
+                    "Voucher Code", paymentData);
         });
     }
 
     @Test
     void testCreatePaymentEmptyStringReferenceCode() {
-        Map<String, String> paymentDataReferenceCode = new HashMap<>();
-        paymentDataReferenceCode.put("referenceCode", "");
+        paymentData.put("referenceCode", "");
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(order.getId(),
-                    "Voucher Code", paymentDataReferenceCode);
+                    "Voucher Code", paymentData);
         });
     }
 
