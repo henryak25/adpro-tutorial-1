@@ -6,6 +6,7 @@
 - [Module 1](#module-1)
 - [Module 2](#module-2)
 - [Module 3](#module-3)
+- [Module 4](#module-4)
 # Deployment Link
 Website deployed at koyeb: https://henry-adpro-tutorial.koyeb.app/
 
@@ -81,3 +82,9 @@ Masih cukup banyak hal yang bisa diimprovisasi dari code saya, seperti mengimple
     - Jika dibiarkan, class atau modul ke depannya bisa memiliki terlalu banyak tanggung jawab, sehingga sulit di-maintain dan rentan terhadap bug. Conthnya, Jika CarController dan ProductController digabung dalam satu class, perubahan pada ProductController bisa saja memengaruhi CarController juga.
     - Kode Sulit Dipahami oleh Developer Lain. Tidak hanya developer lain, tapi diri kita juga terdampak. Jika kita mengimplementasikan suatu fungsi dan setelah beberapa saat baru kembali ke fungsi itu, kita mungkin akan kesulitan membaca ulang code yang kita buat jika tidak mengikuti prinsip SOLID. Misalnya, jika sebuah fungsi atau class terlalu panjang dan melakukan banyak hal (melanggar SRP), tentunya setiap kali kita atau orang lain baca akan lebih effort untuk bisa mengerti. 
     - Kode menjadi kaku dan sulit dikembangkan, karena setiap penambahan fitur baru memerlukan modifikasi pada kode yang sudah ada. 
+
+## Module 4
+1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+   Selama mengerjakan tutorial dan exercise mengenai TDD ini, saya belajar bahwa dalam membuat implementasi class kita bisa memulai dari membuat test-testnya terlebih dahulu, tidak selalu dimulai dari mendefinisikan classnya. Dengan menulis unit test terlebih dahulu sebelum mengimplementasikan kode, saya merasa code saya lebih rapi, lebih aman karena perlu memikirkan unhappy path juga, dan juga lebih mudah dimaintain ke depannya. Menurut saya, salah satu kelebihan utama dari TDD ini maintainability dan reliabilitynya yang tinggi. Namun, karena belum terlalu terbiasa dengan TDD, saya merasa terlalu banyak membuang waktu dalam bagian RED, khususnya dalam membuat unit unit test ini. Melihat ke belakang, saya menyadari bahwa saya cenderung memiliki mindset "pokoknya pembuatan unit test ini harus sempurna di awal", padahal sebenarnya sesuai yang diajarkan di kelas kita bisa looping dalam proses RED & GREEN baru masuk ke proses REFACTOR. Ke depannya, saya ingin membuat test tanpa perlu terlalu memaksakan kesempurnaan di awal.
+2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+   Setelah melihat kembali unit test yang saya buat, saya merasa sudah menerapkan prinsip F.I.R.S.T ini dengan baik. Fast & Independent: Saya rasa unit test yang saya buat sudah memenuhi prinsip ini karena setiap test berjalan secara terpisah dan tidak melibatkan operasi yang berat. Repeatable: unit test yang saya buat sudah memenuhi prinsip Repeatable karena hasilnya konsisten setiap kali dijalankan. Self-Validating: Unit test yang saya buat sudah self-validating karena setiap test memiliki assertion yang jelas untuk memeriksa apakah fungsionalitasnya benar. Timely: unit test yang dibuat sudah mengkonsiderasi kasus happy dan unhappy yang bisa muncul
