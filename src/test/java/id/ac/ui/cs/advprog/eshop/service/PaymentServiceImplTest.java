@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 
 import java.util.*;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.*;
 
 
@@ -55,31 +57,31 @@ public class PaymentServiceImplTest {
 
     @Test
     void testCreatePayment(){
-        Payment payment = new  Payment(orders.getFirst().getId(), "Voucher Code", voucherPaymentData);
+        Payment payment = new  Payment(orders.getFirst().getId(), PaymentMethod.VOUCHER.getValue(), voucherPaymentData);
         doReturn(null).when(paymentRepository).findById(payment.getId());
 
-        Payment result = paymentService.addPayment(orders.getFirst(), "Voucher Code", new HashMap<>());
+        Payment result = paymentService.addPayment(orders.getFirst(), PaymentMethod.BANK.getValue(), bankPaymentData);
         verify(paymentRepository, times(1)).save(any(Payment.class));
         assertEquals(payment.getId(), result.getId());
     }
 
     @Test
     void testUpdateStatusInvalidStatus(){
-        Payment payment = new Payment(orders.get(1).getId(), "Voucher Code", voucherPaymentData);
+        Payment payment = new Payment(orders.get(1).getId(), PaymentMethod.VOUCHER.getValue(), voucherPaymentData);
         assertThrows(IllegalArgumentException.class, () -> paymentService.setStatus(payment, "OTW"));
         verify(paymentRepository, times(0)).update(any(Payment.class));
     }
 
     @Test
     void testGetAllPayments() {
-        paymentService.addPayment(orders.getFirst(), "Voucher Code", voucherPaymentData);
-        paymentService.addPayment(orders.get(1), "Bank Transfer", bankPaymentData);
+        paymentService.addPayment(orders.getFirst(), PaymentMethod.VOUCHER.getValue(), voucherPaymentData);
+        paymentService.addPayment(orders.get(1), PaymentMethod.BANK.getValue(), bankPaymentData);
         assertEquals(2, paymentService.getAllPayments().size());
     }
 
     @Test
     void testFindByIdSuccess() {
-        Payment payment = paymentService.addPayment(orders.getFirst(), "Voucher Code", voucherPaymentData);
+        Payment payment = paymentService.addPayment(orders.getFirst(), PaymentMethod.VOUCHER.getValue(), voucherPaymentData);
         doReturn(payment).when(paymentRepository).findById(payment.getId());
         assertEquals(payment, paymentService.getPayment(payment.getId()));
     }
