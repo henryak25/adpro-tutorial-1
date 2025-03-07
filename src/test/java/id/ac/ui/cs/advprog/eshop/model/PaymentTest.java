@@ -15,14 +15,16 @@ public class PaymentTest {
     private List<Product> products;
     private List<Payment> payments;
     private Order order;
-    private Map<String, String> paymentData;
+    private Map<String, String> paymentDataVoucher;
+    private Map<String, String> paymentDataBank;
 
     @BeforeEach
     void setUp() {
-        paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        paymentData.put("bankName", "cihuy");
-        paymentData.put("referenceCode", "1234");
+        paymentDataVoucher = new HashMap<>();
+        paymentDataBank = new HashMap<>();
+        paymentDataVoucher.put("voucherCode", "ESHOP1234ABC5678");
+        paymentDataBank.put("bankName", "cihuy");
+        paymentDataBank.put("referenceCode", "1234");
         this.products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -49,65 +51,72 @@ public class PaymentTest {
 
     @Test
     void testCreatePaymentEmptyStringBankName() {
-        paymentData.put("bankName", "");
+        paymentDataBank.put("bankName", "");
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(order.getId(),
-                    "Voucher Code", paymentData);
+                    "Bank Transfer", paymentDataBank);
         });
     }
 
     @Test
     void testCreatePaymentEmptyStringReferenceCode() {
-        paymentData.put("referenceCode", "");
+        paymentDataBank.put("referenceCode", "");
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment(order.getId(),
-                    "Voucher Code", paymentData);
+                    "Bank Transfer", paymentDataBank);
         });
     }
 
     @Test
     void testCreatePaymentVoucher16charsFail() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP1234ABC567899");
+        paymentDataVoucher.put("voucherCode", "ESHOP1234ABC567899");
         assertThrows(IllegalArgumentException.class, ()-> {new
                 Payment(order.getId(),
-                "Voucher Code", paymentData);
+                "Voucher Code", paymentDataVoucher);
+        });
+    }
+
+    @Test
+    void testCreatePaymentVoucher8numericFail() {
+        paymentDataVoucher.put("voucherCode", "ESHOP1234AB56789");
+        assertThrows(IllegalArgumentException.class, ()-> {new
+                Payment(order.getId(),
+                "Voucher Code", paymentDataVoucher);
         });
     }
 
     @Test
     void testCreatePaymentVoucherStartWithESHOPFail() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "AYAM1234ABC567899999");
+        paymentDataVoucher.put("voucherCode", "AYAM1234ABC567899999");
         assertThrows(IllegalArgumentException.class, ()-> {new
                 Payment(order.getId(),
-                "Voucher Code", paymentData);
+                "Voucher Code", paymentDataVoucher);
         });
     }
 
     @Test
     void testCreateStatusInvalidStatus() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment(order.getId(), "Voucher Code", "AYAM", this.paymentData);
+            Payment payment = new Payment(order.getId(), "Voucher Code", "AYAM", this.paymentDataVoucher);
         });
     }
 
     @Test
     void testCreatePaymentSuccessStatus() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentData);
+        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentDataVoucher);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
     void testSetStatusPaymentToSuccess() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "REJECTED", paymentData);
+        Payment payment = new Payment(order.getId(), "Voucher Code", "REJECTED", paymentDataVoucher);
         payment.setStatus("SUCCESS");
         assertEquals("SUCCESS", payment.getStatus());
     }
 
     @Test
     void testSetStatusPaymentToInvalidStatus() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentData);
+        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentDataVoucher);
         assertThrows(IllegalArgumentException.class, () -> order.setStatus("MEOW"));
     }
 }
