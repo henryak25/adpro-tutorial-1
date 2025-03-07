@@ -14,7 +14,7 @@ public class Payment {
     String status;
     Map<String, String> paymentData;
 
-    Payment(String id, String method, Map<String, String> paymentData) {
+    public Payment(String id, String method, Map<String, String> paymentData) {
         this.checkPaymentMethod(method);
         this.checkPaymentData(paymentData, method);
         this.paymentData = paymentData;

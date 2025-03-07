@@ -1,0 +1,133 @@
+package id.ac.ui.cs.advprog.eshop.repository;
+
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.model.Order;
+import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.Product;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PaymentRepositoryTest {
+    PaymentRepository paymentRepository;
+    List<Payment> payments;
+    List<Product> products;
+    List<Order> orders;
+
+    @BeforeEach
+    void setUp() {
+        paymentRepository = new PaymentRepository();
+        payments = new ArrayList<>();
+        orders = new ArrayList<>();
+        products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+        products.add(product1);
+        orders = new ArrayList<>();
+        Order order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b", products, 1708560000L, "Safira Sudarajat");
+        orders.add(order1);
+        Order order2 = new Order("e334ef40-9eff-4da8-9487-8ee607ecbf1e", products, 1708570000L, "Bambang Sudrajat");
+        orders.add(order2);
+        Map<String, String> paymentDataVoucher = new HashMap<>();
+        paymentDataVoucher.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment1 = new Payment(orders.getFirst().getId(),"Voucher Code", paymentDataVoucher);
+        Map<String, String> paymentDataBank = new  HashMap<>();
+        paymentDataVoucher.put("bankName", "Free Bird");
+        paymentDataVoucher.put("referenceCode", "2");
+        Payment payment2 = new Payment(orders.get(1).getId(),"Bank Transfer",  paymentDataVoucher);
+        payments.add(payment1);
+        payments.add(payment2);
+    }
+
+    @Test
+    void testAddPaymentSuccess() {
+        Payment payment = payments.getFirst();
+
+        Payment result = paymentRepository.save(payment);
+        Payment findResult = paymentRepository.findById(payments.getFirst().getId());
+
+        assertEquals(payment.getId(), result.getId());
+        assertEquals(payment.getId(), findResult.getId());
+
+        assertEquals(payment.getMethod(), findResult.getMethod());
+        assertSame(payment.getPaymentData(), findResult.getPaymentData());
+        assertEquals(payment.getStatus(), findResult.getStatus());
+    }
+
+    @Test
+    void testUpdatePaymentStatusSuccess() {
+        Payment payment = payments.getFirst();
+        paymentRepository.save(payment);
+        Payment payment2 = new Payment(payment.getId(), payment.getMethod(),
+                PaymentStatus.SUCCESS.getValue(), payment.getPaymentData());
+        Payment result = paymentRepository.update(payment2);
+        Payment findResult = paymentRepository.findById(result.getId());
+        assertEquals(payment.getId(), findResult.getId());
+        assertEquals(payment.getMethod(), findResult.getMethod());
+        assertEquals(payment.getPaymentData(), findResult.getPaymentData());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), findResult.getStatus());
+    }
+
+    @Test
+    void testUpdatePaymentStatusIdNotFound() {
+        Payment payment = payments.getFirst();
+        paymentRepository.save(payment);
+        Payment payment2 = new Payment(payments.get(1).getId(), payment.getMethod(),
+                PaymentStatus.SUCCESS.getValue(), payment.getPaymentData());
+        assertNull(paymentRepository.update(payment2));
+    }
+
+    @Test
+    void testAddPaymentAlreadyExist() {
+        Payment payment1 = payments.get(1);
+        Payment result = paymentRepository.save(payment1);
+
+        Payment payment2 = new Payment(payment1.getId(), payment1.getMethod(),
+                PaymentStatus.SUCCESS.getValue(), payment1.getPaymentData());
+
+        assertThrows(IllegalStateException.class, ()->{
+            paymentRepository.save(payment2);
+        });
+    }
+
+    @Test
+    void testFindByIdSuccess() {
+        paymentRepository.save(payments.getFirst());
+        Payment result = paymentRepository.findById(payments.getFirst().getId());
+        assertEquals(payments.getFirst().getId(), result.getId());
+        assertEquals(payments.getFirst().getMethod(), result.getMethod());
+        assertEquals(payments.getFirst().getStatus(), result.getStatus());
+        assertSame(payments.getFirst().getPaymentData(), result.getPaymentData());
+    }
+
+    @Test
+    void testFindByIdFailed() {
+        assertNull(paymentRepository.findById("skibidi toilet"));
+    }
+
+    @Test
+    void testGetAllPayment() {
+        for (Payment payment : payments) {
+            paymentRepository.save(payment);
+        }
+        List<Payment> result = paymentRepository.getAllPayment();
+        assertEquals(payments.size(), result.size());
+    }
+
+    @Test
+    void testGetAllPaymentEmptyList() {
+        payments.clear();
+        List<Payment> result = paymentRepository.getAllPayment();
+        assertEquals(payments.size(), result.size());
+        assertTrue(payments.isEmpty());
+    }
+}
