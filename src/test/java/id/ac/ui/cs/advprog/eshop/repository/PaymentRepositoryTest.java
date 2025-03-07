@@ -39,11 +39,11 @@ public class PaymentRepositoryTest {
         orders.add(order2);
         Map<String, String> paymentDataVoucher = new HashMap<>();
         paymentDataVoucher.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment1 = new Payment(orders.getFirst().getId(),"Voucher Code", paymentDataVoucher);
+        Payment payment1 = new Payment(orders.getFirst().getId(),"Voucher Code", PaymentStatus.REJECTED.getValue(), paymentDataVoucher);
         Map<String, String> paymentDataBank = new  HashMap<>();
         paymentDataVoucher.put("bankName", "Free Bird");
         paymentDataVoucher.put("referenceCode", "2");
-        Payment payment2 = new Payment(orders.get(1).getId(),"Bank Transfer",  paymentDataVoucher);
+        Payment payment2 = new Payment(orders.get(1).getId(),"Bank Transfer", PaymentStatus.REJECTED.getValue(),  paymentDataVoucher);
         payments.add(payment1);
         payments.add(payment2);
     }

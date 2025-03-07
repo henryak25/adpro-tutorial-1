@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -103,20 +104,20 @@ public class PaymentTest {
 
     @Test
     void testCreatePaymentSuccessStatus() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentDataVoucher);
-        assertEquals("SUCCESS", payment.getStatus());
+        Payment payment = new Payment(order.getId(), "Voucher Code", PaymentStatus.SUCCESS.getValue(), paymentDataVoucher);
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
     void testSetStatusPaymentToSuccess() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "REJECTED", paymentDataVoucher);
-        payment.setStatus("SUCCESS");
-        assertEquals("SUCCESS", payment.getStatus());
+        Payment payment = new Payment(order.getId(), "Voucher Code", PaymentStatus.REJECTED.getValue(), paymentDataVoucher);
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
     void testSetStatusPaymentToInvalidStatus() {
-        Payment payment = new Payment(order.getId(), "Voucher Code", "SUCCESS", paymentDataVoucher);
+        Payment payment = new Payment(order.getId(), "Voucher Code", PaymentStatus.SUCCESS.getValue(), paymentDataVoucher);
         assertThrows(IllegalArgumentException.class, () -> order.setStatus("MEOW"));
     }
 }
