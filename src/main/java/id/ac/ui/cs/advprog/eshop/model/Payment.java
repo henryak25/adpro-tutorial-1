@@ -15,15 +15,17 @@ public class Payment {
     Map<String, String> paymentData;
 
     Payment(String id, String method, Map<String, String> paymentData) {
-        this.checkPaymentData(paymentData);
+        this.checkPaymentMethod(method);
+        this.checkPaymentData(paymentData, method);
         this.paymentData = paymentData;
         this.id = id;
         this.method = method;
         this.status = PaymentStatus.REJECTED.getValue();
     }
 
-    Payment(String id, String method, String status, Map<String, String> paymentData) {
-        this.checkPaymentData(paymentData);
+    public Payment(String id, String method, String status, Map<String, String> paymentData) {
+        this.checkPaymentMethod(method);
+        this.checkPaymentData(paymentData, method);
         this.paymentData = paymentData;
         this.setStatus(status);
         this.id = id;
@@ -38,25 +40,44 @@ public class Payment {
         }
     }
 
-    public void checkPaymentData(Map<String, String> paymentData){
+    public void checkPaymentMethod(String method){
+        if(!method.equals("Voucher Code") && !method.equals("Bank Transfer")){
+            throw new IllegalArgumentException();
+        }
+    }
+    public void checkVoucherCode(String voucherCode){
+        int numericalCount = 0;
+        if (voucherCode.isBlank() || voucherCode.length() != 16) {
+            throw new IllegalArgumentException();
+        }
+        if(!voucherCode.startsWith("ESHOP")){
+            throw new IllegalArgumentException();
+        }
+        for (int i = 0; i < voucherCode.length(); i++) {
+            char ch = voucherCode.charAt(i);
+            if(Character.isDigit(ch)){
+                numericalCount++;
+            }
+        }
+        if(numericalCount != 8){
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void checkPaymentData(Map<String, String> paymentData, String method){
         if(paymentData == null){
             throw new IllegalArgumentException();
-        } else if (!paymentData.containsKey("voucherCode") && !paymentData.containsKey("bankName") && !paymentData.containsKey("referenceCode")) {
-            throw new IllegalArgumentException();
         } else {
-            if(paymentData.get("voucherCode").isEmpty() || paymentData.get("voucherCode").length()!=16){
-                throw new IllegalArgumentException();
-            }
-            if(!paymentData.get("voucherCode").startsWith("ESHOP")){
-                throw new IllegalArgumentException();
-            }
-            if(paymentData.get("voucherCode").isEmpty()){
-                throw new IllegalArgumentException();
-            }
-            if(paymentData.get("bankName").isEmpty()){
-                throw new IllegalArgumentException();
-            }
-            if(paymentData.get("referenceCode").isEmpty()){
+            if(method.equals("Voucher Code")) {
+                checkVoucherCode(paymentData.get("voucherCode"));
+            } else if(method.equals("Bank Transfer")) {
+                if(paymentData.get("bankName").isEmpty()){
+                    throw new IllegalArgumentException();
+                }
+                if(paymentData.get("referenceCode").isEmpty()){
+                    throw new IllegalArgumentException();
+                }
+            } else {
                 throw new IllegalArgumentException();
             }
         }
